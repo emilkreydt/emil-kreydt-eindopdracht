@@ -1,29 +1,28 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-const Header = () => {
+export function Header() {
     return (
-        <header className="flex justify-between items-center p-6 bg-white shadow-md">
+        <h1 className="flex justify-between items-center p-6 bg-white shadow-md">
             {/* Logo */}
             <div className="text-2xl font-bold text-blue-600">HealthyMe</div>
 
             {/* Navigatie */}
             <nav className="hidden md:flex space-x-6">
-                <a href="#" className="text-gray-700 hover:text-blue-600">Home</a>
-                <a href="#" className="text-gray-700 hover:text-blue-600">About Us</a>
-                <a href="#" className="text-gray-700 hover:text-blue-600">How to Use</a>
+                <Link href="/" className="text-gray-700 hover:text-blue-600">Home</Link>
+                <Link href="/about" className="text-gray-700 hover:text-blue-600">About Us</Link>
+                <Link href="/how-to-use" className="text-gray-700 hover:text-blue-600">How to Use</Link>
             </nav>
 
-            {/* Taal + Knoppen */}
+            {/* Knoppen */}
             <div className="flex items-center space-x-4">
-                {/* Placeholder voor taalkeuze (kan later vervangen worden door dropdown) */}
-                <span className="text-gray-700 hidden md:inline">🌍 English ▼</span>
-
-                {/* Sign In en Register knoppen */}
                 <Button variant="ghost" size="sm">Sign in</Button>
-                <Button variant="default" size="sm">Register</Button>
-            </div>
-        </header>
-    );
-};
 
-export default Header;
+                {/* 🔹 Register knop met Next.js navigatie */}
+                <Link href="/register">
+                    <Button variant="default" size="sm">Register</Button>
+                </Link>
+            </div>
+        </h1>
+    );
+}

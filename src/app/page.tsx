@@ -1,14 +1,11 @@
-import Header from "@/components/sections/header";
-import {SignUpForm} from "@/components/signUpForm";
+import {Header} from "@/components/sections/header";
 
 
-export default function Home() {
-  return (
-
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-        <SignUpForm/>
-      </div>
-
-
-  );
+export default function SignUp() {
+    return (
+        <div className="min-h-screen flex flex-col bg-gray-100">
+            {/* Header */}
+            <Header />
+        </div>
+    );
 }
