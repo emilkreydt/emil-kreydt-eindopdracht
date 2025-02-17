@@ -1,9 +1,14 @@
+import Header from "@/components/sections/header";
+import {SignUpForm} from "@/components/signUpForm";
 
 
 export default function Home() {
   return (
-    <div className="text-center min-h-screen h-full flex flex-col justify-center items-center gap-y-20 w-full">
-      <h1 className="text-4xl font-bold">emil</h1>
-    </div>
+
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <SignUpForm/>
+      </div>
+
+
   );
 }
