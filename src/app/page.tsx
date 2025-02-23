@@ -6,10 +6,10 @@ import Section from "@/components/sections/section";
 
 export default function Home() {
     return (
-        <div className="min-h-screen flex flex-col bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
+        <div>
             <Header />
 
-            <Section>
+            <Section className="min-h-screen flex flex-col bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
                 <div className="max-w-lg">
                     <h1 className="text-5xl font-extrabold leading-tight">
                         Transform Your Health Today
@@ -24,8 +24,8 @@ export default function Home() {
                 <Image
                     src="/images/homepage.png"
                     alt="Fitness Icon"
-                    width={400}
-                    height={250}
+                    width={300}
+                    height={200}
                     className="rounded-lg bg-transparent"
                 />
             </Section>

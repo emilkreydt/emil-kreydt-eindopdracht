@@ -1,40 +1,50 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+"use client"; // 🔥 Voeg dit toe als eerste regel!
+
+import { useState } from "react";
 
 export function SignUpForm() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const response = await fetch("/api/auth/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+        setMessage(data.message || data.error);
+    }
+
     return (
         <div className="p-8 bg-white rounded-lg shadow-md w-96">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Welcome User</h2>
-
-            <form className="space-y-4">
-                {/* E-mailveld */}
-                <Input type="email" placeholder="Enter Email" />
-
-                {/* Wachtwoordveld */}
-                <Input type="password" placeholder="●●●●●●●●" />
-
-                {/* Leeftijd & Geslacht */}
-                <div className="flex space-x-4">
-                    <Input type="number" placeholder="Age" />
-                    <Select>
-                        <option value="">Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </Select>
-                </div>
-
-                {/* Lengte & Gewicht */}
-                <div className="flex space-x-4">
-                    <Input type="text" placeholder="Height (cm)" />
-                    <Input type="text" placeholder="Weight (kg)" />
-                </div>
-
-                {/* Registreer-knop */}
-                <Button className="w-full">Register</Button>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Sign Up</h2>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="border p-2 w-full"
+                />
+                <input
+                    type="password"
+                    placeholder="●●●●●●●●"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="border p-2 w-full"
+                />
+                <button type="submit" className="bg-blue-600 text-white p-2 w-full">
+                    Register
+                </button>
             </form>
-
-            <p className="text-center text-gray-500 mt-4">Having Problems?</p>
+            {message && <p className="mt-2 text-center text-red-600">{message}</p>}
         </div>
     );
 }
+
+
+

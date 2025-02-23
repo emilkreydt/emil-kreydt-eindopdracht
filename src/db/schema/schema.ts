@@ -7,3 +7,10 @@ export const workouts = pgTable("workouts", {
     isGood: boolean().notNull().default(false),
 });
 
+export const users = pgTable("users", {
+    id: uuid().primaryKey().defaultRandom(),
+    email: varchar({ length: 255 }).unique().notNull(),
+    password: varchar({ length: 255 }).notNull(),
+    isAdmin: boolean().notNull().default(false),
+});
+

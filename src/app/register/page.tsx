@@ -8,23 +8,19 @@ export default function SignUp() {
             {/* Header */}
             <Header />
 
-            <Section className="bg-gray-100 min-h-screen">
+            <Section className="min-h-screen flex flex-col bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
             {/* Hoofdcontent */}
                     {/* Linkerkant: Welkomsttekst + Afbeelding */}
                     <div className="w-full md:w-1/2 text-center md:text-left p-6">
                         <h1 className="text-4xl font-bold text-gray-800">
                             Sign Up to get your nutrients
                         </h1>
-                        <p className="text-gray-600 mt-2">
+                        <p className="mt-2">
                             If you already have an account, you can{" "}
-                            <a href="#" className="text-blue-600 underline">Login here!</a>
+                            <a href="#" className="text-red-600 underline">Login here!</a>
                         </p>
                     </div>
-
-                    {/* Rechterkant: Registratieformulier */}
-                    <div className="w-full md:w-1/3 p-6">
-                        <SignUpForm />
-                    </div>
+                <SignUpForm />
             </Section>
         </div>
     );
