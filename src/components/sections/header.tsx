@@ -5,7 +5,7 @@ export function Header() {
     return (
         <h1 className="flex justify-between items-center p-6 bg-white shadow-md">
             {/* Logo */}
-            <div className="text-2xl font-bold text-blue-600">HealthyMe</div>
+            <div className="text-2xl font-bold text-blue-600">TapFit</div>
 
             {/* Navigatie */}
             <nav className="hidden md:flex space-x-6">
