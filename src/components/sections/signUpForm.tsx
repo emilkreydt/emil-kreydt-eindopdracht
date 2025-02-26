@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {ButtonMedium} from "@/components/ui/buttonMedium";
 
 export function SignUpForm() {
     const router = useRouter();
@@ -158,12 +159,9 @@ export function SignUpForm() {
 
                 {/* submit */}
                 <div className="col-span-1 md:col-span-2 flex justify-center">
-                    <button
-                        type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium p-3 rounded-md w-full md:w-1/2 transition duration-300"
-                    >
+                    <ButtonMedium type="submit">
                         Register
-                    </button>
+                    </ButtonMedium>
                 </div>
             </form>
 

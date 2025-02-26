@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/components/sections/header";
 import Section from "@/components/sections/section";
 import Link from "next/link";
+import {ButtonMedium} from "@/components/ui/buttonMedium";
 
 export default function Login() {
     const router = useRouter();
@@ -86,12 +87,9 @@ export default function Login() {
                             </div>
 
                             {/* Submit */}
-                            <button
-                                type="submit"
-                                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold p-3 rounded-md w-full transition duration-300"
-                            >
+                            <ButtonMedium type="submit">
                                 Login
-                            </button>
+                            </ButtonMedium>
                         </form>
 
                         {/* Error */}
