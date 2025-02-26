@@ -9,7 +9,7 @@ export default function Home() {
         <div>
             <Header />
 
-            <Section className="min-h-screen flex flex-col bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
+            <Section className="min-h-screen flex flex-col bg-gradient-to-r from-[#6366F1] to-[#4F46E5] ">
                 <div className="max-w-lg">
                     <h1 className="text-5xl font-extrabold leading-tight">
                         Transform Your Health Today

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {ButtonMedium} from "@/components/ui/buttonMedium";
 
 export function Header() {
     return (
@@ -20,7 +21,7 @@ export function Header() {
 
                 {/* 🔹 Register knop met Next.js navigatie */}
                 <Link href="/register">
-                    <Button variant="default" size="sm">Register</Button>
+                    <ButtonMedium variant="default" size="sm">Register</ButtonMedium>
                 </Link>
             </div>
         </h1>
