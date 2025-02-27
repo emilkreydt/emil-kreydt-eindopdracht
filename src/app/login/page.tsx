@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/components/sections/header";
 import Section from "@/components/sections/section";
 import Link from "next/link";
-import {ButtonMedium} from "@/components/ui/buttonMedium";
+import { ButtonMedium } from "@/components/ui/buttonMedium";
 
 export default function Login() {
     const router = useRouter();
@@ -20,18 +20,24 @@ export default function Login() {
         e.preventDefault();
         setMessage("");
 
-        const response = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
+        try {
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (data.error) {
-            setMessage(data.error);
-        } else {
-            router.push("/dashboard"); // redirect
+            if (!response.ok) {
+                setMessage(data.error);
+                return;
+            }
+
+            localStorage.setItem("token", data.token);
+            router.push("/dashboard");
+        } catch (error) {
+            setMessage("Something went wrong. Please try again.");
         }
     }
 
@@ -40,8 +46,6 @@ export default function Login() {
             <Header />
 
             <Section className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-[#6366F1] to-[#4F46E5] p-6">
-
-                {/* links */}
                 <div className="w-full md:w-1/2 text-center md:text-left text-white p-6">
                     <h1 className="text-4xl font-bold">Log in to access your dashboard</h1>
                     <p className="mt-2 text-lg">
@@ -52,13 +56,10 @@ export default function Login() {
                     </p>
                 </div>
 
-                {/* rechts */}
                 <div className="w-full md:w-1/2 flex justify-center">
                     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Login</h2>
                         <form className="space-y-4" onSubmit={handleSubmit}>
-
-                            {/* mail */}
                             <div className="flex flex-col">
                                 <label className="text-gray-700 font-medium">Email</label>
                                 <input
@@ -72,7 +73,6 @@ export default function Login() {
                                 />
                             </div>
 
-                            {/* ww */}
                             <div className="flex flex-col">
                                 <label className="text-gray-700 font-medium">Password</label>
                                 <input
@@ -86,13 +86,11 @@ export default function Login() {
                                 />
                             </div>
 
-                            {/* Submit */}
                             <ButtonMedium type="submit">
                                 Login
                             </ButtonMedium>
                         </form>
 
-                        {/* Error */}
                         {message && <p className="mt-4 text-center text-red-600">{message}</p>}
                     </div>
                 </div>
