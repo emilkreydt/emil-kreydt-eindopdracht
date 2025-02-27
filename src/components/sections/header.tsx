@@ -48,9 +48,9 @@ export function Header() {
 
             <div className="flex items-center space-x-4">
                 {isLoggedIn ? (
-                    <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md">
+                    <ButtonMedium onClick={handleLogout}>
                         Sign Out
-                    </button>
+                    </ButtonMedium>
                 ) : (
                     <>
                         <Link href="/login">

@@ -40,7 +40,7 @@ export function SignUpForm() {
     }
 
     return (
-        <div className="p-8 bg-white rounded-lg shadow-lg w-full max-w-2xl mx-auto">
+        <div className="p-8 bg-white rounded-lg shadow-lg w-full max-w-2xl mx-auto mt-[-100px]">
             <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Sign Up</h2>
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
 

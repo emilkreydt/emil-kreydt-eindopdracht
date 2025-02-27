@@ -91,13 +91,13 @@ export default function WorkoutCalendar() {
     const daysInMonth = eachDayOfInterval({ start: firstDay, end: lastDay });
 
     return (
-        <Section className="min-h-screen w-full flex flex-col bg-gradient-to-r from-[#6366F1] to-[#4F46E5] p-6">
-            <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto">
+        <Section className="relative w-screen h-screen bg-gradient-to-r from-[#6366F1] to-[#4F46E5] flex items-center justify-center">
+            <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto mt-[-100px]">
                 <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
                     Workout Calendar - {format(today, "MMMM yyyy")}
                 </h2>
 
-                <div className="grid grid-cols-7 gap-2">
+                <div className="grid grid-cols-7 gap-2 w-full">
                     {daysInMonth.map((day) => {
                         const dateString = format(day, "yyyy-MM-dd");
                         const workout = workouts.find((w) => w.date === dateString);
@@ -116,7 +116,7 @@ export default function WorkoutCalendar() {
                     })}
                 </div>
 
-                <div className="mt-6 flex flex-col items-center space-y-4">
+                <div className="mt-6 flex flex-col items-center space-y-4 w-full">
                     <p className="text-lg text-gray-700">Today's Workout</p>
                     {workouts.some((w) => w.date === todayString) ? (
                         <p className="text-green-600 font-bold">Workout already logged for today</p>
@@ -137,4 +137,5 @@ export default function WorkoutCalendar() {
             </div>
         </Section>
     );
+
 }
