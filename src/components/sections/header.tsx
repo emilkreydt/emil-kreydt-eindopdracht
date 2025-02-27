@@ -15,11 +15,17 @@ export function Header() {
         setIsLoggedIn(!!token);
     }, []);
 
-    //logout in de header verwerkt
     function handleLogout() {
         localStorage.removeItem("token");
         setIsLoggedIn(false);
         router.push("/login");
+    }
+
+    function handleDashboardClick(e: React.MouseEvent) {
+        if (!isLoggedIn) {
+            e.preventDefault();
+            router.push("/login");
+        }
     }
 
     return (
@@ -27,16 +33,24 @@ export function Header() {
             <div className="text-2xl font-bold text-blue-600">TapFit</div>
 
             <nav className="hidden md:flex space-x-6">
-                <Link href="/" className="text-gray-700 hover:text-blue-600">Home</Link>
-                <Link href="/dashboard" className="text-gray-700 hover:text-blue-600">Dashboard</Link>
-                <Link href="/how-to-use" className="text-gray-700 hover:text-blue-600">How to Use</Link>
+                {!isLoggedIn && (
+                    <Link href="/" className="text-gray-700 hover:text-blue-600">Home</Link>
+                )}
+                <Link href="/dashboard" onClick={handleDashboardClick} className="text-gray-700 hover:text-blue-600">
+                    Dashboard
+                </Link>
+                {isLoggedIn && (
+                    <Link href="/how-to-use" className="text-gray-700 hover:text-blue-600">
+                        How to Use
+                    </Link>
+                )}
             </nav>
 
             <div className="flex items-center space-x-4">
                 {isLoggedIn ? (
-                    <ButtonMedium onClick={handleLogout}>
+                    <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md">
                         Sign Out
-                    </ButtonMedium>
+                    </button>
                 ) : (
                     <>
                         <Link href="/login">
