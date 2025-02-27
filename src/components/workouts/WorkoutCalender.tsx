@@ -1,18 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday } from "date-fns";
+import { format, isToday } from "date-fns";
 import { ButtonMedium } from "@/components/ui/buttonMedium";
+import Section from "@/components/sections/section";
 
 interface Workout {
     id?: string;
     date: string;
+    name: string;
     completed: boolean;
 }
 
 export default function WorkoutCalendar() {
-    const [workouts, setWorkouts] = useState<Workout[]>([]); // ✅ Ensure workouts is an array
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [workouts, setWorkouts] = useState<Workout[]>([]);
+    const [workoutName, setWorkoutName] = useState<string>("");
+    const todayString = format(new Date(), "yyyy-MM-dd");
 
     useEffect(() => {
         fetchWorkouts();
@@ -21,7 +24,6 @@ export default function WorkoutCalendar() {
     async function fetchWorkouts() {
         try {
             const token = localStorage.getItem("token");
-            console.log("Token being used:", token); // Check if token exists
 
             if (!token) {
                 console.error("No token found, user is not authenticated");
@@ -40,7 +42,6 @@ export default function WorkoutCalendar() {
             }
 
             const data = await res.json();
-            console.log("API Response:", data);
 
             if (!Array.isArray(data)) {
                 console.error("Unexpected API response:", data);
@@ -54,7 +55,12 @@ export default function WorkoutCalendar() {
         }
     }
 
-    async function toggleWorkout(date: string) {
+    async function toggleWorkout() {
+        if (!workoutName.trim()) {
+            console.error("Workout name is required.");
+            return;
+        }
+
         try {
             const token = localStorage.getItem("token");
             if (!token) {
@@ -62,7 +68,7 @@ export default function WorkoutCalendar() {
                 return;
             }
 
-            const existingWorkout = workouts?.some((w) => w.date === date);
+            const existingWorkout = workouts.some((w) => w.date === todayString);
             const method = existingWorkout ? "DELETE" : "POST";
 
             await fetch("/api/workouts", {
@@ -71,57 +77,44 @@ export default function WorkoutCalendar() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ date, completed: !existingWorkout }),
+                body: JSON.stringify({ date: todayString, name: workoutName, completed: !existingWorkout }),
             });
 
+            setWorkoutName("");
             fetchWorkouts();
         } catch (error) {
             console.error("Error updating workout:", error);
         }
     }
 
-    const today = new Date();
-    const firstDay = startOfMonth(today);
-    const lastDay = endOfMonth(today);
-    const daysInMonth = eachDayOfInterval({ start: firstDay, end: lastDay });
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto">
-            <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
-                Workout Calendar - {format(today, "MMMM yyyy")}
-            </h2>
+        <Section className="min-h-screen flex flex-col bg-gradient-to-r from-[#6366F1] to-[#4F46E5] p-6">
+            <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto">
+                <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+                    Workout Calendar - {format(new Date(), "MMMM yyyy")}
+                </h2>
 
-            {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-2">
-                {daysInMonth.map((day) => {
-                    const dateString = format(day, "yyyy-MM-dd");
-                    const hasWorkout = Array.isArray(workouts) && workouts.some((w) => w.date === dateString && w.completed);
+                <div className="flex flex-col items-center space-y-4">
+                    <p className="text-lg text-gray-700">Today's Workout</p>
 
-                    return (
-                        <div
-                            key={dateString}
-                            className={`p-3 rounded-md text-center cursor-pointer border transition ${
-                                hasWorkout ? "bg-green-500 text-white" : "bg-gray-100"
-                            } ${isToday(day) ? "border-blue-500 font-bold" : ""}`}
-                            onClick={() => setSelectedDate(dateString)}
-                        >
-                            {format(day, "d")}
-                        </div>
-                    );
-                })}
-            </div>
+                    {workouts.some((w) => w.date === todayString) ? (
+                        <p className="text-green-600 font-bold">Workout already logged for today</p>
+                    ) : (
+                        <input
+                            type="text"
+                            placeholder="Workout name"
+                            value={workoutName}
+                            onChange={(e) => setWorkoutName(e.target.value)}
+                            className="border p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
+                        />
+                    )}
 
-            {/* Workout Actions */}
-            {selectedDate && (
-                <div className="mt-4 p-4 bg-gray-200 rounded-md">
-                    <p className="text-lg">Workout for {selectedDate}</p>
-                    <ButtonMedium onClick={() => toggleWorkout(selectedDate)}>
-                        {workouts?.some((w) => w.date === selectedDate && w.completed)
-                            ? "Remove Workout"
-                            : "Add Workout"}
+                    <ButtonMedium onClick={toggleWorkout} disabled={workouts.some((w) => w.date === todayString)}>
+                        {workouts.some((w) => w.date === todayString) ? "Workout Added" : "Add Workout"}
                     </ButtonMedium>
                 </div>
-            )}
-        </div>
+            </div>
+        </Section>
     );
 }

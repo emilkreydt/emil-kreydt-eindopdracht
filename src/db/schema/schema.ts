@@ -1,5 +1,4 @@
-
-import {boolean, integer, pgTable, uuid, varchar} from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
     id: uuid().primaryKey().defaultRandom(),
@@ -18,6 +17,6 @@ export const workouts = pgTable("workouts", {
     id: uuid().primaryKey().defaultRandom(),
     userId: uuid().notNull(),
     date: varchar({ length: 10 }).notNull(),
+    name: varchar({ length: 255 }).notNull(),
     completed: boolean().notNull().default(false),
 });
-
