@@ -92,10 +92,10 @@ export default function WorkoutCalendar() {
 
     return (
         <Section className="relative w-screen h-screen bg-gradient-to-r from-[#6366F1] to-[#4F46E5] flex items-center justify-center">
-            <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto mt-[-100px]">
-                <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+            <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto mt-[-20px]">
+                <h1 className="font-extrabold leading-tight text-center">
                     Workout Calendar - {format(today, "MMMM yyyy")}
-                </h2>
+                </h1>
 
                 <div className="grid grid-cols-7 gap-2 w-full">
                     {daysInMonth.map((day) => {
@@ -117,7 +117,9 @@ export default function WorkoutCalendar() {
                 </div>
 
                 <div className="mt-6 flex flex-col items-center space-y-4 w-full">
-                    <p className="text-lg text-gray-700">Today's Workout</p>
+                    <h1 className="font-extrabold leading-tight text-center">
+                        Today's workout
+                    </h1>
                     {workouts.some((w) => w.date === todayString) ? (
                         <p className="text-green-600 font-bold">Workout already logged for today</p>
                     ) : (
