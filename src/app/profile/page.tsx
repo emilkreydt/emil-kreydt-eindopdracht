@@ -39,8 +39,8 @@ export default function ProfilePage() {
         <div className="min-h-screen bg-gray-100">
             <Header />
 
-            <Section className="flex justify-center items-center min-h-[calc(100vh-64px)] w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
-                <Card className="w-full text-center bg-white rounded-lg">
+            <Section className="flex justify-center items-center py-40 w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
+            <Card className="w-full text-center bg-white rounded-lg">
                     <CardHeader className="flex items-center space-x-4 p-6">
                         <img
                             src={user.avatar || "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png"}
