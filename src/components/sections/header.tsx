@@ -31,6 +31,10 @@ export function Header() {
         router.push("/login");
     }
 
+    function handleGoToProfile() {
+        router.push("/profile");
+    }
+
     return (
         <header className="flex justify-between items-center p-6 bg-white shadow-md">
             <div className="text-2xl font-bold text-blue-600">TapFit</div>
@@ -52,7 +56,8 @@ export function Header() {
                         <img
                             src={avatar}
                             alt="User Avatar"
-                            className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                            className="w-10 h-10 rounded-full object-cover border border-gray-300 cursor-pointer"
+                            onClick={handleGoToProfile}
                         />
                         <ButtonMedium onClick={handleLogout}>Sign Out</ButtonMedium>
                     </>

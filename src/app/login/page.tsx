@@ -35,9 +35,19 @@ export default function Login() {
             }
 
             localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user)); // hier zit die avatar dus in
+            localStorage.setItem("user", JSON.stringify({
+                email: data.user.email,
+                firstName: data.user.firstName,
+                lastName: data.user.lastName,
+                age: data.user.age,
+                weight: data.user.weight,
+                height: data.user.height,
+                gender: data.user.gender,
+                avatar: data.user.avatar
+            }));
 
             router.push("/dashboard");
+
         } catch (error) {
             setMessage("Something went wrong. Please try again.");
         }
