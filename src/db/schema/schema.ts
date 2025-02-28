@@ -10,8 +10,10 @@ export const users = pgTable("users", {
     weight: integer().notNull(),
     height: integer().notNull(),
     gender: varchar({ length: 10 }).notNull(),
+    avatar: varchar({ length: 500 }),
     isAdmin: boolean().notNull().default(false),
 });
+
 
 export const workouts = pgTable("workouts", {
     id: uuid().primaryKey().defaultRandom(),

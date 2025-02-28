@@ -1,14 +1,13 @@
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/db/client";
 import { users } from "@/db/schema/schema";
 import { eq } from "drizzle-orm";
-import jwt from "jsonwebtoken";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== "POST") {
-        return res.status(405).json({ error: "Method Not Allowed" });
-    }
+const DEFAULT_AVATAR = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
+
+export default async function handler(req, res) {
+    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
 
     const { email, password } = req.body;
 
@@ -16,34 +15,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: "Missing email or password" });
     }
 
-    try {
-        // 🔥 FIXED: Use `eq(users.email, email)` instead of `.equals(email)`
-        const existingUser = await db
-            .select()
-            .from(users)
-            .where(eq(users.email, email))
-            .execute();
+    const user = await db.select().from(users).where(eq(users.email, email)).execute();
 
-        if (existingUser.length === 0) {
-            return res.status(400).json({ error: "User not found" });
-        }
-
-        // Check password
-        const validPassword = await bcrypt.compare(password, existingUser[0].password);
-        if (!validPassword) {
-            return res.status(400).json({ error: "Incorrect password" });
-        }
-
-        // Generate JWT token
-        const token = jwt.sign(
-            { id: existingUser[0].id, email: existingUser[0].email },
-            process.env.JWT_SECRET!,
-            { expiresIn: "1h" }
-        );
-
-        return res.status(200).json({ message: "Login successful", token });
-    } catch (error) {
-        console.error("Login error:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
+    if (user.length === 0) {
+        return res.status(400).json({ error: "User not found" });
     }
+
+    const validPassword = await bcrypt.compare(password, user[0].password);
+    if (!validPassword) {
+        return res.status(400).json({ error: "Incorrect password" });
+    }
+
+    const token = jwt.sign({ id: user[0].id, email: user[0].email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    return res.status(200).json({
+        message: "Login successful",
+        token,
+        user: {
+            email: user[0].email,
+            firstName: user[0].firstName,
+            lastName: user[0].lastName,
+            avatar: user[0].avatar?.trim() ? user[0].avatar : DEFAULT_AVATAR,
+        },
+    });
 }

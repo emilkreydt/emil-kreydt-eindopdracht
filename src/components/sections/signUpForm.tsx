@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {ButtonMedium} from "@/components/ui/buttonMedium";
+import {format} from "date-fns";
 
 export function SignUpForm() {
     const router = useRouter();
@@ -15,6 +16,7 @@ export function SignUpForm() {
         weight: "",
         height: "",
         gender: "male",
+        avatar: "",
     });
 
     const [message, setMessage] = useState("");
@@ -41,7 +43,9 @@ export function SignUpForm() {
 
     return (
         <div className="p-8 bg-white rounded-lg shadow-lg w-full max-w-2xl mx-auto mt-[-10px]">
-            <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Sign Up</h2>
+            <h1 className="text-2xl font-extrabold leading-tight text-center mb-5">
+                Sign Up
+            </h1>
             <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
 
                 {/* mail */}
@@ -155,6 +159,20 @@ export function SignUpForm() {
                         <option value="female">Female</option>
                         <option value="other">I prefer not to tell this</option>
                     </select>
+                </div>
+
+                {/* avatar */}
+
+                <div>
+                    <label>Avatar *</label>
+                    <input
+                        type="text"
+                        name="avatar"
+                        placeholder="https://example.com/avatar.png"
+                        value={formData.avatar}
+                        onChange={handleChange}
+                        className="border p-2 w-full"
+                    />
                 </div>
 
                 {/* submit */}

@@ -2,66 +2,63 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ButtonMedium } from "@/components/ui/buttonMedium";
 import { useRouter } from "next/navigation";
 
+const DEFAULT_AVATAR = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
+
 export function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [avatar, setAvatar] = useState(DEFAULT_AVATAR);
     const router = useRouter();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        setIsLoggedIn(!!token);
+        const storedUser = localStorage.getItem("user");
+
+        if (token && storedUser) {
+            setIsLoggedIn(true);
+            const user = JSON.parse(storedUser);
+            setAvatar(user.avatar?.trim() ? user.avatar : DEFAULT_AVATAR);
+        }
     }, []);
 
     function handleLogout() {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setIsLoggedIn(false);
+        setAvatar(DEFAULT_AVATAR);
         router.push("/login");
     }
 
-    function handleDashboardClick(e: React.MouseEvent) {
-        if (!isLoggedIn) {
-            e.preventDefault();
-            router.push("/login");
-        }
-    }
-
     return (
-        <h1 className="flex justify-between items-center p-6 bg-white shadow-md">
+        <header className="flex justify-between items-center p-6 bg-white shadow-md">
             <div className="text-2xl font-bold text-blue-600">TapFit</div>
 
             <nav className="hidden md:flex space-x-6">
-                {!isLoggedIn && (
-                    <Link href="/" className="text-gray-700 hover:text-blue-600">Home</Link>
-                )}
-                <Link href="/dashboard" onClick={handleDashboardClick} className="text-gray-700 hover:text-blue-600">
-                    Dashboard
-                </Link>
-                {isLoggedIn && (
-                    <Link href="/how-to-use" className="text-gray-700 hover:text-blue-600">
-                        How to Use
-                    </Link>
+                {isLoggedIn ? (
+                    <>
+                        <Link href="/dashboard">Dashboard</Link>
+                        <Link href="/how-to-use">How to Use</Link>
+                    </>
+                ) : (
+                    <Link href="/">Home</Link>
                 )}
             </nav>
 
             <div className="flex items-center space-x-4">
                 {isLoggedIn ? (
-                    <ButtonMedium onClick={handleLogout}>
-                        Sign Out
-                    </ButtonMedium>
+                    <>
+                        <img src={avatar} alt="Avatar" className="w-10 h-10 rounded-full object-cover" />
+                        <ButtonMedium onClick={handleLogout}>Sign Out</ButtonMedium>
+                    </>
                 ) : (
                     <>
-                        <Link href="/login">
-                            <Button variant="ghost" size="sm">Sign in</Button>
-                        </Link>
-                        <Link href="/register">
-                            <ButtonMedium variant="default" size="sm">Register</ButtonMedium>
-                        </Link>
+                        <Link href="/login">Sign in</Link>
+                        <Link href="/register">Register</Link>
                     </>
                 )}
             </div>
-        </h1>
+        </header>
     );
 }
