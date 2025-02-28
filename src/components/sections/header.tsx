@@ -50,7 +50,7 @@ export function Header() {
         <header className="w-full bg-white shadow-md">
             <div className="container mx-auto flex justify-between items-center p-4">
                 {/* Logo */}
-                <div className="text-2xl font-bold text-blue-600 cursor-pointer" onClick={() => router.push("/")}>
+                <div className="text-2xl font-bold text-blue-600">
                     TapFit
                 </div>
 
