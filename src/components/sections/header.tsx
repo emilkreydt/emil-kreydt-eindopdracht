@@ -17,8 +17,8 @@ export function Header() {
         const storedUser = localStorage.getItem("user");
 
         if (token && storedUser) {
-            setIsLoggedIn(true);
             const user = JSON.parse(storedUser);
+            setIsLoggedIn(true);
             setAvatar(user.avatar?.trim() ? user.avatar : DEFAULT_AVATAR);
         }
     }, []);
@@ -49,13 +49,21 @@ export function Header() {
             <div className="flex items-center space-x-4">
                 {isLoggedIn ? (
                     <>
-                        <img src={avatar} alt="Avatar" className="w-10 h-10 rounded-full object-cover" />
+                        <img
+                            src={avatar}
+                            alt="User Avatar"
+                            className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                        />
                         <ButtonMedium onClick={handleLogout}>Sign Out</ButtonMedium>
                     </>
                 ) : (
                     <>
-                        <Link href="/login">Sign in</Link>
-                        <Link href="/register">Register</Link>
+                        <Link href="/login">
+                            <ButtonMedium variant="ghost" size="sm">Sign in</ButtonMedium>
+                        </Link>
+                        <Link href="/register">
+                            <ButtonMedium variant="default" size="sm">Register</ButtonMedium>
+                        </Link>
                     </>
                 )}
             </div>

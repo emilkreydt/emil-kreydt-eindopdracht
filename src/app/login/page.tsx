@@ -35,6 +35,8 @@ export default function Login() {
             }
 
             localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user)); // hier zit die avatar dus in
+
             router.push("/dashboard");
         } catch (error) {
             setMessage("Something went wrong. Please try again.");

@@ -7,7 +7,9 @@ import { eq } from "drizzle-orm";
 const DEFAULT_AVATAR = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
 
 export default async function handler(req, res) {
-    if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Method Not Allowed" });
+    }
 
     const { email, password } = req.body;
 
@@ -26,7 +28,11 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Incorrect password" });
     }
 
-    const token = jwt.sign({ id: user[0].id, email: user[0].email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(
+        { id: user[0].id, email: user[0].email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+    );
 
     return res.status(200).json({
         message: "Login successful",
