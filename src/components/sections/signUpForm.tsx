@@ -25,21 +25,55 @@ export function SignUpForm() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
+    function handleFileChange(e) {
+        const file = e.target.files[0];
+        setFormData((prev) => ({ ...prev, avatar: file }));
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
-        const response = await fetch("/api/auth/signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
 
-        const data = await response.json();
-        if (data.error) {
-            setMessage(data.error);
-        } else {
-            router.push("/login");
+        try {
+            // Upload de afbeelding eerst naar Cloudinary
+            const imageUrl = await uploadImage(formData.avatar);
+
+            // Stuur daarna alle data (inclusief de Cloudinary URL) naar je signup API
+            const response = await fetch("/api/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ...formData, avatar: imageUrl }),
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                setMessage(data.error);
+            } else {
+                router.push("/login");
+            }
+        } catch (error) {
+            setMessage("Something went wrong during registration.");
         }
     }
+
+    async function uploadImage(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error("Image upload failed");
+        }
+
+        const data = await response.json();
+        return data.secure_url;  // Dit is de URL die je opslaat in je database
+    }
+
 
     return (
         <div className="p-8 bg-white rounded-lg shadow-lg w-full max-w-2xl mx-auto mt-[-10px]">
@@ -162,18 +196,18 @@ export function SignUpForm() {
                 </div>
 
                 {/* avatar */}
-
-                <div>
-                    <label>Avatar *</label>
+                <div className="flex flex-col">
+                    <label className="text-gray-700 font-medium">Avatar (Profile Picture)</label>
                     <input
-                        type="text"
+                        type="file"
                         name="avatar"
-                        placeholder="https://example.com/avatar.png"
-                        value={formData.avatar}
-                        onChange={handleChange}
-                        className="border p-2 w-full"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
                     />
                 </div>
+
 
                 {/* submit */}
                 <div className="col-span-1 md:col-span-2 flex justify-center">
