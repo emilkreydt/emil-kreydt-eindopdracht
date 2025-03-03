@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { ButtonMedium } from "@/components/ui/buttonMedium";
-import { BellIcon } from "lucide-react";
+import {Users} from "lucide-react";
 
 const DEFAULT_AVATAR = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
 
@@ -98,9 +98,9 @@ export function Header() {
                                 className="relative cursor-pointer"
                                 onClick={() => router.push("/friends")}
                             >
-                                <BellIcon className="w-6 h-6 text-gray-700" />
+                                <Users className="w-6 h-6 text-gray-700" />
                                 {friendRequests > 0 && (
-                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                                    <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                                         {friendRequests}
                                     </span>
                                 )}
