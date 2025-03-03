@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday } from "date-fns";
 import Section from "@/components/sections/section";
 import { Header } from "@/components/sections/header";
+import BackButton from "@/components/ui/backButton";
 
 interface Workout {
     id?: string;
@@ -51,6 +52,7 @@ export default function FriendCalendar() {
             <Header />
 
             <Section className="flex justify-center items-center min-h-[calc(100vh-64px)] w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
+                <BackButton/>
                 <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto">
                     <h1 className="text-2xl font-extrabold text-center mb-4">
                         {friendName}'s Workout Calendar - {format(today, "MMMM yyyy")}

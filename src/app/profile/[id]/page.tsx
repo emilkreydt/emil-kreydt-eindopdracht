@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { Header } from "@/components/sections/header";
 import Section from "@/components/sections/section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import BackButton from "@/components/ui/backButton";
 
 type UserProfile = {
     firstName: string;
@@ -48,6 +49,7 @@ export default function FriendProfile() {
         <div className="min-h-screen bg-gray-100">
             <Header />
             <Section className="flex justify-center items-center min-h-[calc(100vh-64px)] w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
+                <BackButton/>
                 <Card className="w-full max-w-2xl bg-white shadow-lg rounded-lg">
                     <CardHeader className="flex items-center space-x-4">
                         <img
