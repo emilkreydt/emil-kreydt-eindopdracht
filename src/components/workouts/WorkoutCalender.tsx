@@ -93,7 +93,10 @@ export default function WorkoutCalendar() {
 
             {/* Today's Workout Input */}
             {todayWorkout ? (
-                <ButtonMedium onClick={removeWorkout} className="bg-red-400 hover:bg-red-600">
+                <ButtonMedium
+                    onClick={removeWorkout}
+                    className="bg-[#6366F1] text-white hover:bg-[#4F46E5]"
+                >
                     Remove Today's Workout
                 </ButtonMedium>
             ) : (
