@@ -1,6 +1,7 @@
 import { Header } from "@/components/sections/header";
 import WorkoutCalendar from "@/components/workouts/WorkoutCalender";
 import AddFriendForm from "@/components/friends/addFriendForm";
+import WorkoutChart from "@/components/workouts/workoutChart";
 
 export default function Dashboard() {
     return (
@@ -14,19 +15,22 @@ export default function Dashboard() {
                     {/* Calendar (2/3 van de breedte op desktop) */}
                     <div className="md:col-span-2 bg-white rounded-lg shadow-md p-6">
                         <h2 className="text-2xl font-bold mb-4 text-gray-800">Your Workout Calendar</h2>
-                        <WorkoutCalendar/>
+                        <WorkoutCalendar />
                     </div>
 
-                    {/* Add Friend (neemt 1 kolom, maar past zich in hoogte aan de content aan) */}
+                    {/* Add Friend */}
                     <div className="flex items-start justify-center">
                         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
                             <h2 className="text-2xl font-bold mb-4 text-gray-800">Add a Friend</h2>
-                            <AddFriendForm/>
+                            <AddFriendForm />
                         </div>
                     </div>
                 </div>
 
-
+                <div className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-800">Monthly Workout Stats</h2>
+                    <WorkoutChart/>
+                </div>
             </div>
         </div>
     );

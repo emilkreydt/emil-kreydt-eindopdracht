@@ -67,9 +67,9 @@ export function Header() {
         <header className="w-full bg-white shadow-md">
             <div className="container mx-auto flex justify-between items-center p-4">
                 {/* Logo */}
-                <Link href="/" className="text-2xl font-bold text-blue-600 cursor-pointer">
+                <div className="text-2xl font-bold text-blue-600">
                     TapFit
-                </Link>
+                </div>
 
                 {/* Desktop nav */}
                 <nav className="hidden md:flex space-x-4">
