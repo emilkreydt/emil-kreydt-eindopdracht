@@ -17,7 +17,7 @@ export function SignUpForm() {
         weight: "",
         height: "",
         gender: "male",
-        avatar: null as File | null,  // Avatar als bestand, niet als string
+        avatar: null as File | null,  // dit moet als bestand, niet als string
     });
 
     const [message, setMessage] = useState("");

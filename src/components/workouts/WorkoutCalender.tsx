@@ -53,7 +53,7 @@ export default function WorkoutCalendar() {
         }
     }
 
-    async function toggleWorkout() {
+    async function addWorkout() {
         if (!workoutName.trim()) {
             console.error("Workout name is required.");
             return;
@@ -66,22 +66,42 @@ export default function WorkoutCalendar() {
                 return;
             }
 
-            const existingWorkout = workouts.some((w) => w.date === todayString);
-            const method = existingWorkout ? "DELETE" : "POST";
-
             await fetch("/api/workouts", {
-                method,
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ date: todayString, name: workoutName, completed: !existingWorkout }),
+                body: JSON.stringify({ date: todayString, name: workoutName, completed: true }),
             });
 
             setWorkoutName("");
             fetchWorkouts();
         } catch (error) {
-            console.error("Error updating workout:", error);
+            console.error("Error adding workout:", error);
+        }
+    }
+
+    async function removeWorkout() {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                console.error("Error: No token found");
+                return;
+            }
+
+            await fetch("/api/workouts", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ date: todayString }),
+            });
+
+            fetchWorkouts();
+        } catch (error) {
+            console.error("Error removing workout:", error);
         }
     }
 
@@ -90,10 +110,12 @@ export default function WorkoutCalendar() {
     const lastDay = endOfMonth(today);
     const daysInMonth = eachDayOfInterval({ start: firstDay, end: lastDay });
 
+    const todayWorkout = workouts.find((w) => w.date === todayString);
+
     return (
         <Section className="relative w-screen h-screen bg-gradient-to-r from-[#6366F1] to-[#4F46E5] flex items-center justify-center">
             <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto mt-[-20px]">
-                <h1 className="font-extrabold leading-tight text-center">
+                <h1 className="font-extrabold leading-tight text-center mb-4">
                     Workout Calendar - {format(today, "MMMM yyyy")}
                 </h1>
 
@@ -117,27 +139,34 @@ export default function WorkoutCalendar() {
                 </div>
 
                 <div className="mt-6 flex flex-col items-center space-y-4 w-full">
-                    <h1 className="font-extrabold leading-tight text-center">
-                        Today's workout
-                    </h1>
-                    {workouts.some((w) => w.date === todayString) ? (
-                        <p className="text-green-600 font-bold">Workout already logged for today</p>
-                    ) : (
-                        <input
-                            type="text"
-                            placeholder="Workout name"
-                            value={workoutName}
-                            onChange={(e) => setWorkoutName(e.target.value)}
-                            className="border p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
-                        />
-                    )}
 
-                    <ButtonMedium onClick={toggleWorkout} disabled={workouts.some((w) => w.date === todayString)}>
-                        {workouts.some((w) => w.date === todayString) ? "Workout Added" : "Add Workout"}
-                    </ButtonMedium>
+                    {todayWorkout ? (
+                        <div className="flex flex-col items-center space-y-2">
+                            <ButtonMedium onClick={removeWorkout} className="bg-red-600 hover:bg-red-700">
+                                Remove Workout
+                            </ButtonMedium>
+                        </div>
+                    ) : (
+                        <div className="w-full">
+                            <h1 className="font-extrabold leading-tight text-center">
+                                Today's workout
+                            </h1>
+                            <input
+                                type="text"
+                                placeholder="Workout name"
+                                value={workoutName}
+                                onChange={(e) => setWorkoutName(e.target.value)}
+                                className="border p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
+                            />
+                            <div className="mt-4 flex justify-center">
+                                <ButtonMedium onClick={addWorkout}>
+                                    Add Workout
+                                </ButtonMedium>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </Section>
     );
-
 }
