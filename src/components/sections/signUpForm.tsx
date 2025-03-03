@@ -91,14 +91,11 @@ export function SignUpForm() {
     }
 
     return (
-        <div className="p-8 bg-white rounded-lg shadow-lg w-full max-w-2xl mx-auto mt-[-10px]">
-            <h1 className="text-2xl font-extrabold leading-tight text-center mb-5">
-                Sign Up
-            </h1>
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
+        <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-xl mx-auto">
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-3" onSubmit={handleSubmit}>
                 {/* Email */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Email</label>
+                    <label className="text-gray-700 text-sm font-medium">Email</label>
                     <input
                         type="email"
                         name="email"
@@ -106,13 +103,13 @@ export function SignUpForm() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* Password */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Password</label>
+                    <label className="text-gray-700 text-sm font-medium">Password</label>
                     <input
                         type="password"
                         name="password"
@@ -120,84 +117,84 @@ export function SignUpForm() {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* First name */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">First name</label>
+                    <label className="text-gray-700 text-sm font-medium">First name</label>
                     <input
                         type="text"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* Last name */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Last name</label>
+                    <label className="text-gray-700 text-sm font-medium">Last name</label>
                     <input
                         type="text"
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* Age */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Age</label>
+                    <label className="text-gray-700 text-sm font-medium">Age</label>
                     <input
                         type="number"
                         name="age"
                         value={formData.age}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* Weight */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Weight (kg)</label>
+                    <label className="text-gray-700 text-sm font-medium">Weight (kg)</label>
                     <input
                         type="number"
                         name="weight"
                         value={formData.weight}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* Height */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Height (cm)</label>
+                    <label className="text-gray-700 text-sm font-medium">Height (cm)</label>
                     <input
                         type="number"
                         name="height"
                         value={formData.height}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* Gender */}
                 <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Gender</label>
+                    <label className="text-gray-700 text-sm font-medium">Gender</label>
                     <select
                         name="gender"
                         value={formData.gender}
                         onChange={handleChange}
                         required
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     >
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -206,23 +203,23 @@ export function SignUpForm() {
                 </div>
 
                 {/* Avatar upload */}
-                <div className="flex flex-col">
-                    <label className="text-gray-700 font-medium">Avatar (Profile Picture)</label>
+                <div className="flex flex-col md:col-span-2">
+                    <label className="text-gray-700 text-sm font-medium">Avatar (Profile Picture)</label>
                     <input
                         type="file"
                         accept="image/*"
                         onChange={handleFileChange}
-                        className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
+                        className="border p-1.5 rounded focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                 </div>
 
                 {/* Submit */}
                 <div className="col-span-2 flex justify-center">
-                    <ButtonMedium type="submit">Register</ButtonMedium>
+                    <ButtonMedium className="px-6 py-2 text-sm" type="submit">Register</ButtonMedium>
                 </div>
             </form>
 
-            {message && <p className="mt-4 text-center text-red-600">{message}</p>}
+            {message && <p className="mt-3 text-center text-red-600 text-sm">{message}</p>}
         </div>
     );
 }
