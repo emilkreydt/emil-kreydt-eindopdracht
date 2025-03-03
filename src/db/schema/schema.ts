@@ -1,4 +1,4 @@
-import { boolean, integer, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
+import {boolean, integer, pgTable, timestamp, uuid, varchar} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
     id: uuid().primaryKey().defaultRandom(),
@@ -22,3 +22,12 @@ export const workouts = pgTable("workouts", {
     name: varchar({ length: 255 }).notNull(),
     completed: boolean().notNull().default(false),
 });
+
+export const friends = pgTable("friends", {
+    id: uuid().primaryKey().defaultRandom(),
+    requesterId: uuid().notNull(),
+    receiverId: uuid().notNull(),
+    status: varchar({ length: 20 }).default("pending"),
+    createdAt: timestamp("created_at").defaultNow(),
+});
+

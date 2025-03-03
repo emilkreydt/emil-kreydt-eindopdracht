@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import {ButtonMedium} from "@/components/ui/buttonMedium";
+import { ButtonMedium } from "@/components/ui/buttonMedium";
+import { BellIcon } from "lucide-react";
 
 const DEFAULT_AVATAR = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
 
@@ -11,6 +12,7 @@ export function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [avatar, setAvatar] = useState(DEFAULT_AVATAR);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [friendRequests, setFriendRequests] = useState<number>(0);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -22,8 +24,23 @@ export function Header() {
             const user = JSON.parse(storedUser);
             setIsLoggedIn(true);
             setAvatar(user.avatar?.trim() ? user.avatar : DEFAULT_AVATAR);
+            fetchFriendRequests();
         }
     }, []);
+
+    async function fetchFriendRequests() {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const res = await fetch("/api/friends/requests", {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.ok) {
+            const requests = await res.json();
+            setFriendRequests(requests.length);
+        }
+    }
 
     function handleLogout() {
         localStorage.removeItem("token");
@@ -50,9 +67,9 @@ export function Header() {
         <header className="w-full bg-white shadow-md">
             <div className="container mx-auto flex justify-between items-center p-4">
                 {/* Logo */}
-                <div className="text-2xl font-bold text-blue-600">
+                <Link href="/" className="text-2xl font-bold text-blue-600 cursor-pointer">
                     TapFit
-                </div>
+                </Link>
 
                 {/* Desktop nav */}
                 <nav className="hidden md:flex space-x-4">
@@ -72,19 +89,31 @@ export function Header() {
                     )}
                 </nav>
 
-                {/* Avatar + Auth Actions */}
+                {/* Right section - Avatar + Notification + Auth Buttons */}
                 <div className="hidden md:flex items-center space-x-4">
                     {isLoggedIn ? (
                         <>
+                            {/* Notificatiebel */}
+                            <div
+                                className="relative cursor-pointer"
+                                onClick={() => router.push("/friends")}
+                            >
+                                <BellIcon className="w-6 h-6 text-gray-700" />
+                                {friendRequests > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                                        {friendRequests}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Avatar */}
                             <img
                                 src={avatar}
                                 alt="User Avatar"
                                 className="w-10 h-10 rounded-full object-cover border border-gray-300 cursor-pointer"
                                 onClick={handleGoToProfile}
                             />
-                            <ButtonMedium
-                                onClick={handleLogout}
-                            >
+                            <ButtonMedium onClick={handleLogout}>
                                 Sign Out
                             </ButtonMedium>
                         </>
@@ -100,7 +129,7 @@ export function Header() {
                     )}
                 </div>
 
-                {/* Hamburger menu - alleen mobiel */}
+                {/* Hamburger menu - mobile only */}
                 <button
                     className="md:hidden text-3xl"
                     onClick={() => setMenuOpen(!menuOpen)}
@@ -109,7 +138,7 @@ export function Header() {
                 </button>
             </div>
 
-            {/* Mobiel menu */}
+            {/* Mobile menu (when open) */}
             {menuOpen && (
                 <div className="md:hidden bg-white border-t">
                     <nav className="flex flex-col space-y-2 p-4">
