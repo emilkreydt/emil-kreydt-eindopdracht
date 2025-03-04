@@ -78,10 +78,6 @@ export default function WorkoutAverageChart() {
             legend: {
                 display: true
             },
-            title: {
-                display: true,
-                text: "Average Workouts per Day"
-            }
         },
         scales: {
             y: {
