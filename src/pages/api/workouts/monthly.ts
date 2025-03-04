@@ -17,26 +17,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const startDate = `${month}-01`;
     const endDate = format(endOfMonth(new Date(startDate)), "yyyy-MM-dd");
 
-    try {
-        const results = await db
-            .select({
-                date: workouts.date,
-                count: sql<number>`count(*)`.as('count')
-            })
-            .from(workouts)
-            .where(
-                and(
-                    eq(workouts.userId, userId),
-                    gte(workouts.date, startDate),
-                    lte(workouts.date, endDate)
-                )
+    const results = await db
+        .select({
+            date: workouts.date,
+            workoutCount: sql<number>`count(*)`.mapWith(Number),  // belangrijk, juiste alias!
+        })
+        .from(workouts)
+        .where(
+            and(
+                eq(workouts.userId, userId),
+                gte(workouts.date, startDate),
+                lte(workouts.date, endDate)
             )
-            .groupBy(workouts.date)
-            .execute();
+        )
+        .groupBy(workouts.date)
+        .execute();
 
-        res.json(results);
-    } catch (error) {
-        console.error("Failed to fetch monthly workout stats:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+    res.json(Array.isArray(results) ? results : []);
+
+
+    const workoutCount = results[0]?.workoutCount || 0;
+
+    // Optioneel: wil je het gemiddelde tot vandaag of over de hele maand?
+    const daysInMonth = endOfMonth(new Date(startDate)).getDate();
+    const today = new Date();
+    const currentDay = today.getMonth() === new Date(startDate).getMonth() ? today.getDate() : daysInMonth;
+
+    const average = workoutCount / currentDay;
+
+    res.json({ workoutCount, average });
 }

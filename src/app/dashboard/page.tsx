@@ -2,6 +2,8 @@ import { Header } from "@/components/sections/header";
 import WorkoutCalendar from "@/components/workouts/WorkoutCalender";
 import AddFriendForm from "@/components/friends/addFriendForm";
 import WorkoutChart from "@/components/workouts/workoutChart";
+import WorkoutAverage from "@/components/workouts/workoutChart";
+import WorkoutAverageChart from "@/components/workouts/workoutChart";
 
 export default function Dashboard() {
     return (
@@ -27,7 +29,7 @@ export default function Dashboard() {
 
                         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
                             <h2 className="text-2xl font-bold mb-4 text-gray-800">Monthly Stats</h2>
-                            <WorkoutChart/>
+                            <WorkoutAverageChart/>
                         </div>
                     </div>
 
