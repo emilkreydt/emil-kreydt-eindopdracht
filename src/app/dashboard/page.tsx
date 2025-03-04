@@ -1,9 +1,9 @@
 import { Header } from "@/components/sections/header";
-import WorkoutCalendar from "@/components/workouts/WorkoutCalender";
+import WorkoutCalendar from "@/components/workouts/workoutCalender";
 import AddFriendForm from "@/components/friends/addFriendForm";
-import WorkoutChart from "@/components/workouts/workoutChart";
-import WorkoutAverage from "@/components/workouts/workoutChart";
-import WorkoutAverageChart from "@/components/workouts/workoutChart";
+import WorkoutChart from "@/components/workouts/workoutAverageChart";
+import WorkoutAverage from "@/components/workouts/workoutAverageChart";
+import WorkoutAverageChart from "@/components/workouts/workoutAverageChart";
 
 export default function Dashboard() {
     return (
