@@ -67,7 +67,7 @@ export default function FriendCalendar() {
                                 <div
                                     key={dateString}
                                     className={`p-3 rounded-md text-center border transition ${
-                                        workout ? "bg-green-500 text-white" : "bg-gray-100"
+                                        workout ? "bg-[#6366F1] text-white" : "bg-gray-100"
                                     } ${isToday(day) ? "border-blue-500 font-bold" : ""}`}
                                 >
                                     {format(day, "d")}

@@ -70,7 +70,7 @@ export default function FriendProfile() {
                             <ProfileField label="Age" value={`${user.age} years`} />
                             <ProfileField label="Weight" value={`${user.weight} kg`} />
                             <ProfileField label="Height" value={`${user.height} cm`} />
-                            <ProfileField label="Gender" value={user.gender} />
+                            <ProfileField label="Gender" value={user.gender.toUpperCase()} />
                         </div>
                     </CardContent>
                 </Card>
