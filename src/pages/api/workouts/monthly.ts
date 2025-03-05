@@ -35,15 +35,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.json(Array.isArray(results) ? results : []);
 
-
-    const workoutCount = results[0]?.workoutCount || 0;
-
-    // Optioneel: wil je het gemiddelde tot vandaag of over de hele maand?
-    const daysInMonth = endOfMonth(new Date(startDate)).getDate();
-    const today = new Date();
-    const currentDay = today.getMonth() === new Date(startDate).getMonth() ? today.getDate() : daysInMonth;
-
-    const average = workoutCount / currentDay;
-
-    res.json({ workoutCount, average });
 }
