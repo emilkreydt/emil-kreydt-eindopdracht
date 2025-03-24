@@ -4,63 +4,56 @@ import { friends, users } from "@/db/schema/schema";
 import { eq, and } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 
-function getUserIdOrThrow(req: NextApiRequest): string {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) throw new Error("No token provided");
+// ✅ Haal de ingelogde user ID uit JWT
+function getUserId(req: NextApiRequest): string | null {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) return null;
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    if (typeof decoded === "object" && decoded && "id" in decoded) {
-        return (decoded as { id: string }).id;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+        if (typeof decoded === "object" && decoded && "id" in decoded) {
+            return (decoded as { id: string }).id;
+        }
+
+        return null;
+    } catch (error) {
+        console.error("JWT verification error:", error);
+        return null;
     }
-
-    throw new Error("Invalid token");
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== "POST") {
+    if (req.method !== "GET") {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    let requesterId: string;
-    try {
-        requesterId = getUserIdOrThrow(req);
-    } catch {
+    const receiverId = getUserId(req);
+    if (!receiverId) {
         return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { email } = req.body;
-    if (!email) {
-        return res.status(400).json({ error: "Email is required." });
-    }
-
-    const [receiver] = await db.select().from(users).where(eq(users.email, email)).execute();
-
-    if (!receiver) {
-        return res.status(404).json({ error: "User not found." });
-    }
-
-    const receiverId = receiver.id;
-
-    const existingRequest = await db
-        .select()
-        .from(friends)
-        .where(
-            and(
-                eq(friends.requesterId, requesterId),
-                eq(friends.receiverId, receiverId)
+    try {
+        const requests = await db
+            .select({
+                requesterId: friends.requesterId,
+                firstName: users.firstName,
+                lastName: users.lastName,
+                email: users.email,
+                avatar: users.avatar,
+            })
+            .from(friends)
+            .innerJoin(users, eq(friends.requesterId, users.id))
+            .where(
+                and(
+                    eq(friends.receiverId, receiverId),  // 🔍 jij bent de ontvanger
+                    eq(friends.status, "pending")        // 🔍 status = pending
+                )
             )
-        )
-        .execute();
+            .execute();
 
-    if (existingRequest.length > 0) {
-        return res.status(400).json({ error: "Friend request already sent or you are already friends." });
+        return res.status(200).json(requests);
+    } catch (error) {
+        console.error("Failed to fetch friend requests:", error);
+        return res.status(500).json({ error: "Internal server error" });
     }
-
-    await db.insert(friends).values({
-        requesterId,
-        receiverId,
-        status: "pending",
-    }).execute();
-
-    return res.status(201).json({ message: "Friend request sent!" });
 }
