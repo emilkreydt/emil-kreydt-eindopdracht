@@ -14,7 +14,7 @@ export default function Carousel() {
     return (
         <section className="py-12 text-center bg-gray-200">
             <h2 className="text-3xl font-bold mb-6">Success Stories</h2>
-            <p className="text-xl italic">"{testimonials[index].text}"</p>
+            <p className="text-xl italic">&quot;{testimonials[index].text}&quot;</p>
             <p className="mt-2 font-semibold">{testimonials[index].name}</p>
             <div className="mt-6 space-x-4">
                 <Button variant="outline" onClick={() => setIndex((index - 1 + testimonials.length) % testimonials.length)}>←</Button>

@@ -49,7 +49,11 @@ export default function Login() {
             router.push("/dashboard");
 
         } catch (error) {
-            setMessage("Something went wrong. Please try again.");
+            if (error instanceof Error) {
+                setMessage(error.message);
+            } else {
+                setMessage("An unknown error occurred");
+            }
         }
     }
 
@@ -61,7 +65,7 @@ export default function Login() {
                 <div className="w-full md:w-1/2 text-center md:text-left text-white p-6">
                     <h1 className="text-4xl font-bold">Log in to access your dashboard</h1>
                     <p className="mt-2 text-lg">
-                        Don't have an account?{" "}
+                        Don&apos;t have an account?{" "}
                         <Link href="/register" className="text-red-300 underline">
                             Sign up here!
                         </Link>

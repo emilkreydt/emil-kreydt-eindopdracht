@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Section from "@/components/sections/section";
 import { Header } from "@/components/sections/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from 'next/image';
 
 type User = {
     email: string;
@@ -42,9 +43,11 @@ export default function ProfilePage() {
             <Section className="flex justify-center items-center py-40 w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5]">
             <Card className="w-full text-center bg-white rounded-lg">
                     <CardHeader className="flex items-center space-x-4 p-6">
-                        <img
+                        <Image
                             src={user.avatar || "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png"}
                             alt="Profile Picture"
+                            width={40}
+                            height={40}
                             className="w-20 h-20 rounded-full object-cover border border-gray-300"
                         />
                         <div>

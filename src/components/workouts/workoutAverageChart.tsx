@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -24,40 +24,50 @@ interface Stat {
 export default function WorkoutAverageChart() {
     const [stats, setStats] = useState<Stat[]>([]);
     const currentMonth = format(new Date(), "yyyy-MM");
-    const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+
+    const daysInMonth = useMemo(() => {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    }, []);
 
     useEffect(() => {
         async function fetchStats() {
             const token = localStorage.getItem("token");
             if (!token) return;
 
-            const res = await fetch(`/api/workouts/monthly?month=${currentMonth}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            try {
+                const res = await fetch(`/api/workouts/monthly?month=${currentMonth}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
 
-            if (res.ok) {
-                const data = await res.json();
-                setStats(data);
-            } else {
-                console.error("Failed to fetch stats");
+                if (res.ok) {
+                    const data = await res.json();
+                    setStats(data);
+                } else {
+                    console.error("Failed to fetch stats");
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
             }
         }
 
         fetchStats();
-    }, []);
+    }, [currentMonth]);
 
-    const cumulativeAverage: number[] = [];
-    let totalWorkouts = 0;
+    const cumulativeAverage = useMemo(() => {
+        let totalWorkouts = 0;
+        const result: number[] = [];
 
-    for (let day = 1; day <= daysInMonth; day++) {
-        const date = `${currentMonth}-${day.toString().padStart(2, "0")}`;
-        const workoutCount = stats.find(d => d.date === date)?.workoutCount || 0;
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = `${currentMonth}-${day.toString().padStart(2, "0")}`;
+            const workoutCount = stats.find(d => d.date === date)?.workoutCount || 0;
 
-        totalWorkouts += workoutCount;
-        const average = totalWorkouts / day;
+            totalWorkouts += workoutCount;
+            result.push(totalWorkouts / day);
+        }
 
-        cumulativeAverage.push(average);
-    }
+        return result;
+    }, [stats, currentMonth, daysInMonth]);
 
     const chartData = {
         labels: Array.from({ length: daysInMonth }, (_, i) => `${i + 1}`),
@@ -77,7 +87,7 @@ export default function WorkoutAverageChart() {
         plugins: {
             legend: {
                 display: true
-            },
+            }
         },
         scales: {
             y: {

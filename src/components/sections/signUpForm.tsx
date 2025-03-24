@@ -50,8 +50,11 @@ export function SignUpForm() {
             try {
                 imageUrl = await uploadImage(formData.avatar);
             } catch (error) {
-                setMessage("Failed to upload avatar. Please try again.");
-                return;
+                if (error instanceof Error) {
+                    setMessage(error.message);
+                } else {
+                    setMessage("An unknown error occurred");
+                }
             }
         }
 

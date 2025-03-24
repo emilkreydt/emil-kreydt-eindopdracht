@@ -4,16 +4,29 @@ import { friends, users } from "@/db/schema/schema";
 import jwt from "jsonwebtoken";
 import { or, and, eq } from "drizzle-orm";
 
-function getUserId(req: NextApiRequest) {
-    const token = req.headers.authorization?.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
-    return decoded.id;
+function getUserId(req: NextApiRequest): string | null {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) return null;
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+        if (typeof decoded === "object" && decoded && "id" in decoded) {
+            return (decoded as { id: string }).id;
+        }
+
+        return null;
+    } catch (error) {
+        console.error("JWT error:", error);
+        return null;
+    }
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
 
     const myUserId = getUserId(req);
+    if (!myUserId) return res.status(401).json({ error: "Unauthorized" });
 
     const results = await db.select({
         friendId: users.id,

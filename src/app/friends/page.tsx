@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ButtonMedium } from "@/components/ui/buttonMedium";
 import Section from "@/components/sections/section";
 import {Header} from "@/components/sections/header";
+import Image from 'next/image';
 
 type Friend = {
     friendId: string;
@@ -82,7 +83,13 @@ export default function FriendsPage() {
                             {requests.map((req) => (
                                 <div key={req.requesterId} className="flex items-center justify-between p-4 bg-gray-100 rounded-md">
                                     <div className="flex items-center space-x-4">
-                                        <img src={req.avatar} alt={req.firstName} className="w-10 h-10 rounded-full" />
+                                        <Image
+                                            src={req.avatar}
+                                            alt={req.firstName}
+                                            width={40}
+                                            height={40}
+                                            className="rounded-full"
+                                        />
                                         <div>
                                             <p className="font-medium">{req.firstName} {req.lastName}</p>
                                             <p className="text-sm text-gray-500">{req.email}</p>
@@ -105,7 +112,11 @@ export default function FriendsPage() {
                             {friends.map((friend) => (
                                 <div key={friend.friendId} className="flex items-center justify-between p-4 bg-gray-100 rounded-md">
                                     <div className="flex items-center space-x-4">
-                                        <img src={friend.avatar} alt={friend.firstName} className="w-10 h-10 rounded-full" />
+                                        <Image src={friend.avatar}
+                                               alt={friend.firstName}
+                                               className="w-10 h-10 rounded-full"
+                                               width={40}
+                                               height={40}/>
                                         <div>
                                             <p className="font-medium">{friend.firstName} {friend.lastName}</p>
                                             <p className="text-sm text-gray-500">{friend.email}</p>

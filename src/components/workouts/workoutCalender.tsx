@@ -97,7 +97,7 @@ export default function WorkoutCalendar() {
                     onClick={removeWorkout}
                     className="bg-[#6366F1] text-white hover:bg-[#4F46E5]"
                 >
-                    Remove Today's Workout
+                    Remove Today&apos;s Workout
                 </ButtonMedium>
             ) : (
                 <div className="space-y-3">

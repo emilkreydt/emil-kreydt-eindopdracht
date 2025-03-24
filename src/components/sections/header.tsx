@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { ButtonMedium } from "@/components/ui/buttonMedium";
 import {Users} from "lucide-react";
+import Image from "next/image";
 
 const DEFAULT_AVATAR = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
 
@@ -107,10 +108,12 @@ export function Header() {
                             </div>
 
                             {/* Avatar */}
-                            <img
+                            <Image
                                 src={avatar}
                                 alt="User Avatar"
-                                className="w-10 h-10 rounded-full object-cover border border-gray-300 cursor-pointer"
+                                width={40}
+                                height={40}
+                                className="rounded-full object-cover border border-gray-300 cursor-pointer"
                                 onClick={handleGoToProfile}
                             />
                             <ButtonMedium onClick={handleLogout}>
