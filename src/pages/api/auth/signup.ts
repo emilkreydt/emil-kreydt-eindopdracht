@@ -4,7 +4,6 @@ import { db } from "@/db/client";
 import { users } from "@/db/schema/schema";
 import { eq } from "drizzle-orm";
 
-// TypeScript types voor je request body
 interface SignupRequestBody {
     email: string;
     password: string;
@@ -14,15 +13,13 @@ interface SignupRequestBody {
     weight: number;
     height: number;
     gender: string;
-    avatar: string;  // dit is de Cloudinary URL die uit de frontend komt
+    avatar: string;
 }
 
-// TypeScript types voor de response
 type SignupResponse =
     | { message: string }
     | { error: string };
 
-// De echte handler functie
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<SignupResponse>
@@ -44,7 +41,6 @@ export default async function handler(
             avatar,
         } = req.body as SignupRequestBody;
 
-        // Basic validatie - je kan dit uitbreiden
         if (
             !email ||
             !password ||
@@ -59,7 +55,6 @@ export default async function handler(
             return res.status(400).json({ error: "All fields are required" });
         }
 
-        // Check of user al bestaat
         const existingUser = await db
             .select()
             .from(users)
@@ -70,10 +65,8 @@ export default async function handler(
             return res.status(400).json({ error: "User already exists" });
         }
 
-        // Wachtwoord hashen
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // User opslaan in de database
         await db.insert(users).values({
             email,
             password: hashedPassword,
@@ -83,7 +76,7 @@ export default async function handler(
             weight: Number(weight),
             height: Number(height),
             gender,
-            avatar,  // dit is de Cloudinary URL die de frontend al heeft geüpload
+            avatar,
         }).execute();
 
         return res.status(201).json({ message: "Welcome to TapFit!" });

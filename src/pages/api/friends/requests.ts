@@ -45,8 +45,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .innerJoin(users, eq(friends.requesterId, users.id))
             .where(
                 and(
-                    eq(friends.receiverId, receiverId),  // 🔍 jij bent de ontvanger
-                    eq(friends.status, "pending")        // 🔍 status = pending
+                    eq(friends.receiverId, receiverId),
+                    eq(friends.status, "pending")
                 )
             )
             .execute();

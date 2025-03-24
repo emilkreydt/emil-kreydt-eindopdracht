@@ -79,9 +79,6 @@ export function Header() {
                             <Link href="/dashboard" className={linkClass("/dashboard")}>
                                 Dashboard
                             </Link>
-                            <Link href="/how-to-use" className={linkClass("/how-to-use")}>
-                                How to Use
-                            </Link>
                         </>
                     ) : (
                         <Link href="/" className={linkClass("/")}>

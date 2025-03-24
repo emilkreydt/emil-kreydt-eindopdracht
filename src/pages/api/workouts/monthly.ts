@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const results = await db
         .select({
             date: workouts.date,
-            workoutCount: sql<number>`count(*)`.mapWith(Number),  // belangrijk, juiste alias!
+            workoutCount: sql<number>`count(*)`.mapWith(Number),
         })
         .from(workouts)
         .where(

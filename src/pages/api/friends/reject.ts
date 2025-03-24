@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .where(
             and(
                 eq(friends.requesterId, requesterId),
-                eq(friends.receiverId, receiverId) // ✅ nu weten we zeker dat het geen null is
+                eq(friends.receiverId, receiverId)
             )
         )
         .execute();

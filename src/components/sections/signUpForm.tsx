@@ -90,13 +90,13 @@ export function SignUpForm() {
         }
 
         const data = await response.json();
-        return data.secure_url;  // Dit is wat je in de database opslaat
+        return data.secure_url;
     }
 
     return (
         <div className="p-6 bg-white rounded-lg shadow-lg w-full max-w-xl mx-auto">
             <form className="grid grid-cols-1 md:grid-cols-2 gap-3" onSubmit={handleSubmit}>
-                {/* Email */}
+                {/* mail */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">Email</label>
                     <input
@@ -110,7 +110,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* Password */}
+                {/* ww */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">Password</label>
                     <input
@@ -124,7 +124,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* First name */}
+                {/* voornaam */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">First name</label>
                     <input
@@ -137,7 +137,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* Last name */}
+                {/* achternaal */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">Last name</label>
                     <input
@@ -150,7 +150,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* Age */}
+                {/* leeftijd */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">Age</label>
                     <input
@@ -163,7 +163,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* Weight */}
+                {/* kg */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">Weight (kg)</label>
                     <input
@@ -176,7 +176,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* Height */}
+                {/* lengte */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">Height (cm)</label>
                     <input
@@ -189,7 +189,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* Gender */}
+                {/* gender */}
                 <div className="flex flex-col">
                     <label className="text-gray-700 text-sm font-medium">Gender</label>
                     <select
@@ -205,7 +205,7 @@ export function SignUpForm() {
                     </select>
                 </div>
 
-                {/* Avatar upload */}
+                {/* avatar */}
                 <div className="flex flex-col md:col-span-2">
                     <label className="text-gray-700 text-sm font-medium">Avatar (Profile Picture)</label>
                     <input
@@ -216,7 +216,7 @@ export function SignUpForm() {
                     />
                 </div>
 
-                {/* Submit */}
+                {/* opslaan */}
                 <div className="col-span-2 flex justify-center">
                     <ButtonMedium className="px-6 py-2 text-sm" type="submit">Register</ButtonMedium>
                 </div>
